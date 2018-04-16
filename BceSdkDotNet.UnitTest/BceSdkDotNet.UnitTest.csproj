@@ -67,6 +67,12 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BceSdkDotNet\BceSdkDotNet.csproj">
+      <Project>{535b03e8-107d-4cd0-8446-431b2a2f1bf1}</Project>
+      <Name>BceSdkDotNet</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
