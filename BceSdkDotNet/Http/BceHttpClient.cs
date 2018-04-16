@@ -135,15 +135,19 @@ namespace BaiduBce.Http
                 }
                 httpWebRequest.Proxy = proxy;
             }
-            if (config.UseNagleAlgorithm != null)
+            if (config.UseNagleAlgorithm.HasValue)
             {
-                httpWebRequest.ServicePoint.UseNagleAlgorithm = (bool) config.UseNagleAlgorithm;
+                ServicePointManager.UseNagleAlgorithm = config.UseNagleAlgorithm.Value;
+                // The following code line will throw an exception with .Net Core
+                //httpWebRequest.ServicePoint.UseNagleAlgorithm = config.UseNagleAlgorithm.Value;
             }
-            httpWebRequest.ServicePoint.MaxIdleTime =
-                config.MaxIdleTimeInMillis ?? BceClientConfiguration.DefaultMaxIdleTimeInMillis;
-            httpWebRequest.ServicePoint.ConnectionLimit =
-                config.ConnectionLimit ?? BceClientConfiguration.DefaultConnectionLimit;
-            httpWebRequest.ServicePoint.Expect100Continue = request.Expect100Continue;
+            ServicePointManager.DefaultConnectionLimit = config.ConnectionLimit.HasValue ? config.ConnectionLimit.Value : BceClientConfiguration.DefaultConnectionLimit;
+            ServicePointManager.Expect100Continue = request.Expect100Continue;
+            //httpWebRequest.ServicePoint.MaxIdleTime =
+                //config.MaxIdleTimeInMillis ?? BceClientConfiguration.DefaultMaxIdleTimeInMillis;
+            //httpWebRequest.ServicePoint.ConnectionLimit =
+                //config.ConnectionLimit ?? BceClientConfiguration.DefaultConnectionLimit;
+            //httpWebRequest.ServicePoint.Expect100Continue = request.Expect100Continue;
             httpWebRequest.Method = request.HttpMethod;
             return httpWebRequest;
         }
